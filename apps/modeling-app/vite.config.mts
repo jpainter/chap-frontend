@@ -24,6 +24,15 @@ const viteConfig = defineConfig(async () => {
             fs: {
                 allow: [path.resolve(__dirname, '../..')],
             },
+            // Dev-only: forward chap route sub-paths directly to chap-core,
+            // bypassing DHIS2 2.41's lack of sub-path route support.
+            proxy: {
+                '/api/routes/chap/run': {
+                    target: 'http://localhost:8000',
+                    rewrite: (path) => path.replace(/^\/api\/routes\/chap\/run/, ''),
+                    changeOrigin: true,
+                },
+            },
         },
         resolve: {
             alias: {

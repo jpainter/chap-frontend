@@ -11,7 +11,10 @@ export const SetChapUrl = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         OpenAPI.WITH_CREDENTIALS = true;
-        OpenAPI.BASE = baseUrl + '/api/routes/chap/run';
+        // In local dev, bypass the DHIS2 route (which requires DHIS2 2.42+
+        // for sub-path support) and hit chap-core directly.
+        const devChapUrl = import.meta.env.DHIS2_CHAP_DIRECT_URL;
+        OpenAPI.BASE = devChapUrl ?? (baseUrl + '/api/routes/chap/run');
 
         queryClient.setDefaultOptions({
             queries: {
