@@ -1,6 +1,6 @@
 import { PERIOD_TYPES } from '@dhis2-chap/core';
 
-const N_SPLITS = 3;
+const N_SPLITS = 10;
 
 const N_PERIODS = {
     [PERIOD_TYPES.MONTH]: 3,

@@ -27,9 +27,16 @@ const viteConfig = defineConfig(async () => {
             // Dev-only: forward chap route sub-paths directly to chap-core,
             // bypassing DHIS2 2.41's lack of sub-path route support.
             proxy: {
+                // Chap-core direct bypass (must come before the general /api/ rule)
                 '/api/routes/chap/run': {
                     target: 'http://localhost:8000',
                     rewrite: (path) => path.replace(/^\/api\/routes\/chap\/run/, ''),
+                    changeOrigin: true,
+                },
+                // Proxy all other /api/ requests to DHIS2 so the browser never
+                // makes cross-origin requests directly to port 8081.
+                '/api': {
+                    target: 'http://localhost:8081',
                     changeOrigin: true,
                 },
             },
